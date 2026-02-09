@@ -92,7 +92,7 @@ async function deleteProduct(id){
 
 async function getOneCategoria(id) {
 
-    const[rows] = await pool.query('SELECT * FROM produtos INNER JOIN categoria ON produtos.id_categoria = categoria.id WHERE categoria.id = ?', [id])
+    const[rows] = await pool.query('SELECT p.id, p.nome, p.descricao, p.preco, p.quantidade_estoque, p.status, p.destaque, p.marca, p.modelo, p.garantia_meses, p.id_categoria, p.created_at, p.updated_at, c.nome AS categoria_nome FROM produtos p INNER JOIN categoria c ON p.id_categoria = c.id WHERE c.id = ?', [id])
 
     return rows
 }

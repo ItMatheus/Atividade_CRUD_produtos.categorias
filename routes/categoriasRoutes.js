@@ -7,5 +7,6 @@ router.get("/", categoriasController.indexCategoria)
 router.get("/:id", categoriasController.indexEspecificCategoria)
 router.post("/:senha", categoriasController.createCategoria)
 router.delete("/:id", categoriasController.excludCategoria)
+router.put("/:id", categoriasController.updateCategoria)
 
 export default router;

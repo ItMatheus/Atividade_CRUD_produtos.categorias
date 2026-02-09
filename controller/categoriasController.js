@@ -73,4 +73,21 @@ async function excludCategoria(req, res) {
             })
         }
 }
-export default {indexCategoria, indexEspecificCategoria, createCategoria, excludCategoria}
+async function updateCategoria(req, res) {
+    try {
+        const {id} = req.params;
+        const categoria = req.body;
+    
+        
+        await Categoria.updateCategorias(id, categoria)
+        res.status(201).json({
+            message : 'Usuário atualizado com sucesso!'
+        })
+    
+        } catch (error) {
+            res.status(500).json({
+                message : 'Erro ao atualizar produto!'
+            })
+        }
+}
+export default {indexCategoria, indexEspecificCategoria, createCategoria, excludCategoria, updateCategoria}

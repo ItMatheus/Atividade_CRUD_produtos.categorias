@@ -25,6 +25,27 @@ async function createCategorias(categoria) {
     return result.insertId
 }
 
+async function updateCategorias(id, categoria){
+    const{  
+        nome,
+        descricao
+    } = categoria
+
+    const [result] = await pool.query(`UPDATE categoria SET 
+        nome = ?, 
+        descricao = ?
+        WHERE id = ?`,
+        [
+        nome,
+        descricao,
+        id
+        ]
+    )
+    return result
+
+
+}
+
 async function deleteCategoria(id) {
     
     const[result] = await pool.query(`DELETE FROM categoria WHERE id = ?`, [id])
@@ -33,4 +54,4 @@ async function deleteCategoria(id) {
 }
 
 
-export default {getAllCategorias, getCategoriasEspecific, createCategorias, deleteCategoria}
+export default {getAllCategorias, getCategoriasEspecific, createCategorias, deleteCategoria, updateCategorias}
