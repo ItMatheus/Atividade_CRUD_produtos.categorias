@@ -5,8 +5,8 @@ const router = express.Router()
 
 router.get("/", produtosController.index)
 router.post("/", produtosController.store)
-router.put("/:id", produtosController.edit)
-router.delete("/:id", produtosController.exclud)
-router.get("/:id", produtosController.indexOneCategoria)
+router.put("/:id", produtosController.update)
+router.delete("/:id", produtosController.delete)
+router.get("/:id", produtosController.indexCategoria)
 
 export default router

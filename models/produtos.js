@@ -1,47 +1,46 @@
 import pool from "../database/connection.js"
 
-async function getAllProducts() {
+class ProdutosModel{
+    async getAll(){
+        const [rows] = await pool.query('SELECT * FROM produtos')
+        return rows
+    }
 
-    const [rows] = await pool.query('SELECT * FROM produtos');
-    return rows;
-}
+    async createProduct(){
+        const{
+            nome,
+            descricao,
+            preco,
+            quantidade_estoque,
+            status,
+            destaque,
+            marca,
+            modelo,
+            garantia_meses,
+            id_categoria
+        } = produto
+    
+        const [result] = await pool.query(`INSERT INTO produtos (
+            nome, descricao, preco, quantidade_estoque, status, destaque, marca, modelo, garantia_meses, id_categoria
+        )VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            nome,
+            descricao,
+            preco,
+            quantidade_estoque,
+            status,
+            destaque,
+            marca,
+            modelo,
+            garantia_meses,
+            id_categoria
+        ]
+    )
+        return result.insertId;
+    }
 
-async function createProduct(produto){
-    const{
-        nome,
-        descricao,
-        preco,
-        quantidade_estoque,
-        status,
-        destaque,
-        marca,
-        modelo,
-        garantia_meses,
-        id_categoria
-    } = produto
-
-    const [result] = await pool.query(`INSERT INTO produtos (
-        nome, descricao, preco, quantidade_estoque, status, destaque, marca, modelo, garantia_meses, id_categoria
-    )VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-        nome,
-        descricao,
-        preco,
-        quantidade_estoque,
-        status,
-        destaque,
-        marca,
-        modelo,
-        garantia_meses,
-        id_categoria
-    ]
-)
-    return result.insertId;
-}   
-
-
-async function updateProduct(id, produto){
-    console.log(id)
+    async updateProduct(id, produto){
+        console.log(id)
     const{  
         nome,
         descricao,
@@ -82,19 +81,116 @@ async function updateProduct(id, produto){
         ]
     )
     return result
-}
+    }
 
-async function deleteProduct(id){
-    const[result] = await pool.query(`DELETE FROM produtos WHERE id = ?`, [id])
+    async deleteProduct(id){
+        const[result] = await pool.query(`DELETE FROM produtos WHERE id = ?`, [id])
 
     return result
-}
-
-async function getOneCategoria(id) {
-
-    const[rows] = await pool.query('SELECT p.id, p.nome, p.descricao, p.preco, p.quantidade_estoque, p.status, p.destaque, p.marca, p.modelo, p.garantia_meses, p.id_categoria, p.created_at, p.updated_at, c.nome AS categoria_nome FROM produtos p INNER JOIN categoria c ON p.id_categoria = c.id WHERE c.id = ?', [id])
+    }
+ 
+    async getOneCategoria(id){
+        const[rows] = await pool.query('SELECT p.id, p.nome, p.descricao, p.preco, p.quantidade_estoque, p.status, p.destaque, p.marca, p.modelo, p.garantia_meses, p.id_categoria, p.created_at, p.updated_at, c.nome AS categoria_nome FROM produtos p INNER JOIN categoria c ON p.id_categoria = c.id WHERE c.id = ?', [id])
 
     return rows
+    }
 }
 
-export default { getAllProducts, createProduct, updateProduct, deleteProduct, getOneCategoria}
+// async function getAllProducts() {
+
+//     const [rows] = await pool.query('SELECT * FROM produtos');
+//     return rows;
+// }
+
+// async function createProduct(produto){
+//     const{
+//         nome,
+//         descricao,
+//         preco,
+//         quantidade_estoque,
+//         status,
+//         destaque,
+//         marca,
+//         modelo,
+//         garantia_meses,
+//         id_categoria
+//     } = produto
+
+//     const [result] = await pool.query(`INSERT INTO produtos (
+//         nome, descricao, preco, quantidade_estoque, status, destaque, marca, modelo, garantia_meses, id_categoria
+//     )VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+//     [
+//         nome,
+//         descricao,
+//         preco,
+//         quantidade_estoque,
+//         status,
+//         destaque,
+//         marca,
+//         modelo,
+//         garantia_meses,
+//         id_categoria
+//     ]
+// )
+//     return result.insertId;
+// }   
+
+
+// async function updateProduct(id, produto){
+//     console.log(id)
+//     const{  
+//         nome,
+//         descricao,
+//         preco,
+//         quantidade_estoque,
+//         status,
+//         destaque,
+//         marca,
+//         modelo,
+//         garantia_meses,
+//         id_categoria
+//     } = produto
+
+//     const [result] = await pool.query(`UPDATE produtos SET 
+//         nome = ?, 
+//         descricao = ?, 
+//         preco = ?, 
+//         quantidade_estoque = ?, 
+//         status = ?, 
+//         destaque = ?, 
+//         marca = ?, 
+//         modelo = ?, 
+//         garantia_meses = ?,
+//         id_categoria = ?
+//         WHERE id = ?`,
+//         [
+//         nome,
+//         descricao,
+//         preco,
+//         quantidade_estoque,
+//         status,
+//         destaque,
+//         marca,
+//         modelo,
+//         garantia_meses,
+//         id_categoria,
+//         id
+//         ]
+//     )
+//     return result
+// }
+
+// async function deleteProduct(id){
+//     const[result] = await pool.query(`DELETE FROM produtos WHERE id = ?`, [id])
+
+//     return result
+// }
+
+// async function getOneCategoria(id) {
+
+//     const[rows] = await pool.query('SELECT p.id, p.nome, p.descricao, p.preco, p.quantidade_estoque, p.status, p.destaque, p.marca, p.modelo, p.garantia_meses, p.id_categoria, p.created_at, p.updated_at, c.nome AS categoria_nome FROM produtos p INNER JOIN categoria c ON p.id_categoria = c.id WHERE c.id = ?', [id])
+
+//     return rows
+// }
+
+export default new ProdutosModel()
